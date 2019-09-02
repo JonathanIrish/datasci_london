@@ -55,30 +55,19 @@ cv.fit$lambda.min
 cv.fit$lambda.1se
 
 coefficients <- coef(fit, s = cv.fit$lambda.min)
-coefficients <- coef(fit, s = cv.fit$lambda.1se)
-active.index <- which(coefficients != 0)
-active.coefficients <- coefficients[active.index]
+coefficients_1se <- coef(fit, s = cv.fit$lambda.1se)
 
-predict(fit, type = 'coefficients')
+print(coefficients)
+print(coefficients_1se)
 
-coxph(Surv(z$fu, z$died) ~ x$cluster_2 + x$cluster_4 + x$cluster_10)
+# cox model and plot survival curves once coefficients determined by LASSO
 
-coxph(Surv(z$fu, z$died) ~ x$cluster_7)
-
-x$cluster_15
-
-cluster10_fit <- survfit(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
-survdiff(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
-
-plot(cluster10_fit,
-		 col = c("blue", "red"))
-legend(6000, 0.8, c("a", "b"), col = c("blue", "red"),
-			 lty = 1)
-
-cluster3_fit <- survfit(Surv(z$fu, z$died) ~ x$cluster_3 < 1.50) 
-survdiff(Surv(z$fu, z$died) ~ x$cluster_3 < median(x$cluster_3)) 
-
-plot(cluster3_fit,
-		 col = c("blue", "red"))
-legend(6000, 0.9, c("high CD7-", "low CD7-"), col = c("blue", "red"),
-			 lty = 1)
+# coxph(Surv(z$fu, z$died) ~ x$cluster_2 + x$cluster_4 + x$cluster_10)
+# 
+# cluster10_fit <- survfit(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
+# survdiff(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
+# 
+# plot(cluster10_fit,
+#      col = c("blue", "red"))
+# legend(6000, 0.8, c("a", "b"), col = c("blue", "red"),
+#        lty = 1)
