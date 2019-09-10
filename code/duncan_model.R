@@ -22,6 +22,8 @@ flow_clustered %>% as.tibble %>%
 	geom_point()
 
 # Save image
+ggarrange(plotlist = c(list(kmean_plot), plots))
+
 png("../figures/tsne.png", width = 8*2*1.2, height = 8*2, units = "in", res = 100)
 ggarrange(plotlist = c(list(kmean_plot), plots))
 dev.off()
@@ -36,10 +38,7 @@ biopsy_data %>%
 # Get X values
 x <-
 z %>%
-	select_at(vars(starts_with("cluster"))) 
-
-# Fill NAs
-x[is.na(x)] <- 0
+	select_at(vars(starts_with("kmean_")))  
 
 # Get Y
 y <- Surv(z$fu, z$died)
@@ -60,14 +59,19 @@ coefficients_1se <- coef(fit, s = cv.fit$lambda.1se)
 print(coefficients)
 print(coefficients_1se)
 
+coefficients %>%
+	as.matrix %>%
+	as_tibble(rownames = "cluster") %>%
+	filter(`1` != 0) %>%
+	arrange(desc(abs(`1`))) %>%
+	print
+
 # cox model and plot survival curves once coefficients determined by LASSO
 
-# coxph(Surv(z$fu, z$died) ~ x$cluster_2 + x$cluster_4 + x$cluster_10)
+# coxph(Surv(z$fu, z$died) ~ x$kmean_ + x$cluster_4 + x$cluster_10)
 # 
-# cluster10_fit <- survfit(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
+fit <- survfit(Surv(z$fu, z$died) ~ x$kmean_4 < median(x$kmean_4)) 
 # survdiff(Surv(z$fu, z$died) ~ x$cluster_10 < median(x$cluster_10)) 
 # 
-# plot(cluster10_fit,
-#      col = c("blue", "red"))
-# legend(6000, 0.8, c("a", "b"), col = c("blue", "red"),
-#        lty = 1)
+plot(fit, col = c("blue", "red"))
+legend(6000, 0.8, c("a", "b"), col = c("blue", "red"), lty = 1)

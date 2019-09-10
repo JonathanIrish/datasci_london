@@ -105,14 +105,14 @@ flow_clustered %>%
 	group_by(lesionnumber) %>%
 	mutate(percent = 100 * (n / sum(n))) %>%
 	select(-n) %>%
-	pivot_wider(names_from = kmean, values_from = percent,
-							names_prefix = "cluster_")
+	spread(key = kmean, value = percent, sep = "_", fill = 0)
 
 # join data with biopsy and survival data
 biopsy_data <-
 left_join(biopsy_cluster_results, biopsy) %>%
 	left_join(patient) %>%
-	select(-samplenumber, -biopsydate, -sampletype) 
+	select(-samplenumber, -biopsydate, -sampletype) %>%
+	ungroup
 
 save(biopsy_data, file = "../data/biopsy_data.Rdata")
 save(flow_clustered, file = "../data/flow_data_clustered.Rdata")
