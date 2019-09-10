@@ -90,11 +90,13 @@ library(MEM)
 print("You may see a bunch of messages, this is OK as long as they are not errors.\n\n")
 devtools::install_github("JinmiaoChenLab/Rphenograph")
 install.packages("ggpubr", repos = "http://cran.us.r-project.org")
+install.packages("glmnet", repos = "http://cran.us.r-project.org")
 ```
 ```{r load_duncan, echo=FALSE, results = "markup"}
 # Load and test the last libraries
 library(Rphenograph)
 library(ggpubr)
+library(glmnet)
 ```
 ```{r install_last_packages, echo=FALSE, results = "markup"}
 # install the last packages for UMAP, t-SNE and other tools
