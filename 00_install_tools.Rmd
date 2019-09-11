@@ -91,6 +91,7 @@ print("You may see a bunch of messages, this is OK as long as they are not error
 devtools::install_github("JinmiaoChenLab/Rphenograph")
 install.packages("ggpubr", repos = "http://cran.us.r-project.org")
 install.packages("glmnet", repos = "http://cran.us.r-project.org")
+devtools::install_github("tidyverse/tidyr")
 ```
 ```{r load_duncan, echo=FALSE, results = "markup"}
 # Load and test the last libraries
@@ -101,7 +102,8 @@ library(glmnet)
 ```{r install_last_packages, echo=FALSE, results = "markup"}
 # install the last packages for UMAP, t-SNE and other tools
 print("You may see a bunch of messages, this is OK as long as they are not errors.\n\n")
-install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+# TidyVerse developer version already installed in the Duncan section above
+#install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 install.packages("Rtsne", repos = "http://cran.us.r-project.org")
 install.packages("uwot", repos = "http://cran.us.r-project.org")
 install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
