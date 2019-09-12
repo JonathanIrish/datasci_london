@@ -3,6 +3,7 @@ library(Rtsne)
 library(Rphenograph)
 library(kohonen)
 library(ggpubr)
+library(scales)
 
 # look at the data
 iris %>%
@@ -116,7 +117,7 @@ iris3 %>%
 	head
 
 iris3 %>%
-	pivot_longer(cols = c(som, pheno, kmeans, hclust),
+	pivot_longer(cols = c(som, pheno, kmeans, hclust, Species),
 							 names_to = "cluster_type",
 							 values_to = "cluster") %>%
 	rename(x_Sepal = Sepal.Length,
@@ -127,10 +128,13 @@ iris3 %>%
 							 names_to = c(".value", "axis_type"),
 							 names_sep = "_"
 							 ) %>%
+	group_by(axis_type) %>%
+	mutate(x = rescale(x)) %>%
+	mutate(y = rescale(y)) %>%
 	ggplot(aes(x = x, y = y, colour = cluster))+
 	geom_point(alpha = 0.7,
-						 size = 5.5)+
-	facet_grid(cluster_type ~ axis_type, scales = "free")
+						 size = 2)+
+	facet_grid(axis_type ~ cluster_type, scales = "free")
 
 
 
